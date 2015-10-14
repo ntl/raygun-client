@@ -1,13 +1,11 @@
 require 'json'
 
-require 'dependency'
-Dependency.activate
+require 'dependency'; Dependency.activate
 require 'telemetry/logger'
 # require 'uuid'
 # require 'clock'
-# require 'settings'
+# require 'settings'; Settings.activate
 # require 'schema'
-Settings.activate
 # require 'casing'
 require 'connection'
 require 'http/protocol'
