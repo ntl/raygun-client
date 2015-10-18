@@ -7,6 +7,8 @@ puts RUBY_DESCRIPTION
 require_relative '../init.rb'
 
 require 'runner'
-require 'telemetry/errors/controls'
+require 'raygun_client/controls'
 
 TestLogger = Telemetry::Logger.get 'Test Output'
+
+Telemetry::Logger::AdHoc.activate
