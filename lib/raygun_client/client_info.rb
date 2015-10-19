@@ -5,7 +5,7 @@ module RaygunClient
     end
 
     def self.version
-      "1"
+      '1'
     end
 
     def self.url
