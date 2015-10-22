@@ -1,3 +1,5 @@
+raise NotImplementedError
+
 require 'json'
 
 require 'dependency'; Dependency.activate
