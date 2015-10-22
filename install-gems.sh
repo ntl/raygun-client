@@ -5,35 +5,33 @@ function local-gem-path {
   fi
 }
 
-# function local-gems {
-  echo
-  echo 'Installing local gems'
-  echo '= = ='
+echo
+echo 'Installing local gems'
+echo '= = ='
 
-  local-gem-path
+local-gem-path
 
-  echo
-  echo 'Removing gem files'
-  echo '- - -'
-  for gem in *.gem; do
-    rm $gem
-  done
+echo
+echo 'Removing gem files'
+echo '- - -'
+for gem in *.gem; do
+  rm $gem
+done
 
-  echo
-  echo 'Building gems'
-  echo '- - -'
-  for gemspec in *.gemspec; do
-    gem build $gemspec
-  done
+echo
+echo 'Building gems'
+echo '- - -'
+for gemspec in *.gemspec; do
+  gem build $gemspec
+done
 
-  echo
-  echo 'Installing gems locally'
-  echo '- - -'
-  for gem in *.gem; do
-    gem install $gem --source https://gem.fury.io/obsidian/ --install-dir ./gems --development
-  done
+echo
+echo 'Installing gems locally'
+echo '- - -'
+for gem in *.gem; do
+  gem install $gem --source https://gem.fury.io/obsidian/ --install-dir ./gems --development
+done
 
-  echo
-  echo '= = ='
-  echo
-# }
+echo
+echo '= = ='
+echo
