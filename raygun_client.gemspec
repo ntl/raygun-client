@@ -2,12 +2,12 @@
 Gem::Specification.new do |s|
   s.name = 'raygun_client'
   s.summary = 'Client for the Raygun API using the Obsidian HTTP client'
-  s.version = '0.0.0'
+  s.version = '0.1.0'
   s.authors = ['']
   s.require_paths = ['lib']
   s.files = Dir.glob('{lib}/**/*')
   s.platform = Gem::Platform::RUBY
-  s.required_ruby_version = '>= 2'
+  s.required_ruby_version = '>= 2.2.3'
 
   s.add_runtime_dependency 'dependency'
   s.add_runtime_dependency 'telemetry-logger'
@@ -20,9 +20,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'http-protocol'
 
   s.add_development_dependency 'runner'
-  s.add_development_dependency 'minitest', '~> 5.5.0'
-  s.add_development_dependency 'minitest-spec-context', '0.0.3'
-  # s.add_development_dependency 'minitest'
-  # s.add_development_dependency 'minitest-spec-context'
+  s.add_development_dependency 'minitest'
+  s.add_development_dependency 'minitest-spec-context'
   s.add_development_dependency 'pry'
 end

@@ -1,5 +1,4 @@
 source 'https://gem.fury.io/obsidian/' do
-  gem 'http-protocol'
   gem 'dependency'
   gem 'telemetry-logger'
   gem 'identifier-uuid'
@@ -9,12 +8,13 @@ source 'https://gem.fury.io/obsidian/' do
   gem 'connection'
   gem 'runner'
   gem 'controls'
+  gem 'http-protocol'
 end
 
 source 'https://rubygems.org'
 
-gem 'minitest', '~> 5.5.0'
-gem 'minitest-spec-context', '0.0.3'
+gem 'minitest'
+gem 'minitest-spec-context'
 
 group :debug do
   gem 'pry'
