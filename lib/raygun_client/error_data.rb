@@ -27,7 +27,7 @@ module RaygunClient
         include Schema::DataStructure
 
         attribute :line_number, Integer
-        attribute :filename, String # file_name
+        attribute :filename, String
         attribute :method_name, String
       end
 
@@ -36,7 +36,7 @@ module RaygunClient
       attribute :stack_trace, Array[StackFrame]
     end
 
-    attribute :occurred_time, String # occurred_on
+    attribute :occurred_time, String
     attribute :machine_name, String
     attribute :client, ClientInfo
     attribute :error, Error
