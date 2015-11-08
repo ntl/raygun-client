@@ -1,3 +1,3 @@
-source ./create-library-symlinks.sh
+source ./library-symlinks.sh
 
-symlink-library 'raygun_client'
+symlink_lib 'raygun_client'
