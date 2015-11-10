@@ -41,7 +41,7 @@ module RaygunClient
       def post(request_body)
         request = ::HTTP::Protocol::Request.new("POST", path)
 
-        set_headers(request, request_body.length)
+        set_headers(request, request_body.bytesize)
 
         start_request(request)
 
