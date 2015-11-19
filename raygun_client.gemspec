@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.2.3'
 
   s.add_runtime_dependency 'error_data'
+  s.add_runtime_dependency 'schema'
+  s.add_runtime_dependency 'casing'
   s.add_runtime_dependency 'connection'
   s.add_runtime_dependency 'controls'
   s.add_runtime_dependency 'http-protocol'
