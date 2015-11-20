@@ -9,15 +9,15 @@ module RaygunClient
         @data = data
       end
 
-      def self.build(error_data)
-        data = ErrorData::Serialize.(error_data)
+      def self.build(data)
+        data = Data::Serialize.(data)
         instance = new data
         Session.configure instance
         instance
       end
 
-      def self.call(error_data)
-        instance = build error_data
+      def self.call(data)
+        instance = build data
         instance.()
       end
 
