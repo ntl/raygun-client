@@ -38,8 +38,8 @@ module RaygunClient
         stack_trace = []
         data.error.backtrace.each do |line|
           frame = {}
-          frame[:line_number] = line.line_number
           frame[:file_name] = line.filename
+          frame[:line_number] = line.line_number
           frame[:method_name] = line.method_name
           stack_trace << frame
         end

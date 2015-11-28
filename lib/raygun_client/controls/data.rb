@@ -35,7 +35,7 @@ module RaygunClient
             'details' => {
               'machineName' => Controls::Data.machine_name,
               'client' => Client.data,
-              'error' => ErrorData::JSON.data
+              'error' => Error.data
             }
           }
         end
@@ -47,6 +47,62 @@ module RaygunClient
               'version' => ClientInfo.version,
               'clientUrl' => ClientInfo.url
             }
+          end
+        end
+
+        module Error
+          def self.data
+            error = {}
+            error['className'] = Controls::Error.class_name
+            error['message'] = Controls::Error.message
+
+            stack_trace = StackTrace.data
+
+            error['stackTrace'] = stack_trace
+
+            error
+          end
+
+          module StackTrace
+            def self.data
+              [
+                Lines::First.data,
+                Lines::Second.data,
+                Lines::Third.data
+              ]
+            end
+
+            module Lines
+              module First
+                def self.data
+                  {
+                    'fileName' => Controls::Error::Backtrace::Lines::First.filename,
+                    'lineNumber' => Controls::Error::Backtrace::Lines::First.line_number,
+                    'methodName' => Controls::Error::Backtrace::Lines::First.method_name
+                  }
+                end
+              end
+
+              module Second
+                def self.data
+                  {
+                    'fileName' => Controls::Error::Backtrace::Lines::Second.filename,
+                    'lineNumber' => Controls::Error::Backtrace::Lines::Second.line_number,
+                    'methodName' => Controls::Error::Backtrace::Lines::Second.method_name
+                  }
+                end
+              end
+
+              module Third
+                def self.data
+                  {
+                    'fileName' => Controls::Error::Backtrace::Lines::Third.filename,
+                    'lineNumber' => Controls::Error::Backtrace::Lines::Third.line_number,
+                    'methodName' => Controls::Error::Backtrace::Lines::Third.method_name
+                  }
+                end
+              end
+            end
           end
         end
       end
