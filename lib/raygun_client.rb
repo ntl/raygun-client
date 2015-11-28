@@ -1,5 +1,6 @@
 require 'json'
 
+require 'serialize'
 require 'connection'
 require 'http/protocol'
 

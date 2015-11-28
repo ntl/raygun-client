@@ -7,6 +7,8 @@ describe "Error Data Serialization" do
     data = RaygunClient::Controls::Data.example
     json_text = RaygunClient::Data::Serialize.(data)
 
+    json_text = Serialize::Write.(data, :json)
+
     assert(json_text == compare_json_text)
   end
 end
