@@ -10,7 +10,7 @@ module RaygunClient
       end
 
       def self.build(data)
-        data = Data::Serialize.(data)
+        data = Data::Serializer::JSON::Write.(data)
         instance = new data
         Session.configure instance
         instance

@@ -13,8 +13,10 @@ module RaygunClient
       end
 
       module JSON
-        def self.write(error_data)
-          Serialize::Write.(error_data)
+        module Write
+          def self.call(error_data)
+            Serialize::Write.(error_data)
+          end
         end
       end
     end
