@@ -5,24 +5,27 @@ module RaygunClient
 
       dependency :session
 
-      def initialize(data)
-        @data = data
+      def self.build
+        new.tap do |instance|
+          Session.configure instance
+        end
       end
 
-      def self.build(data)
-        data = Data::Serializer::JSON::Write.(data)
-        instance = new data
-        Session.configure instance
-        instance
+      def self.configure(receiver)
+        build.tap do |instance|
+          receiver.raygun_post = instance
+        end
       end
 
       def self.call(data)
-        instance = build data
-        instance.()
+        instance = build
+        instance.(data)
       end
 
-      def call
-        response = session.post data
+      def call(data)
+        json_text = Data::Serializer::JSON::Write.(data)
+
+        response = session.post json_text
         response
       end
     end

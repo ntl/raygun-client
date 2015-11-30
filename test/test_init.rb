@@ -7,7 +7,7 @@ puts RUBY_DESCRIPTION
 require_relative '../init.rb'
 
 require 'runner'
-
 require 'raygun_client/controls'
+require 'ostruct'
 
 Telemetry::Logger::AdHoc.activate
