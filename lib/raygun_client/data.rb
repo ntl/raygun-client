@@ -14,8 +14,8 @@ module RaygunClient
 
       module JSON
         module Write
-          def self.call(error_data)
-            Serialize::Write.(error_data)
+          def self.call(data)
+            Serialize::Write.(data)
           end
         end
       end
