@@ -7,6 +7,12 @@ module RaygunClient
       attribute :version, String
       attribute :client_url, String
 
+      def ==(other)
+        name == other.name &&
+          version == other.version &&
+          client_url == other.client_url
+      end
+
       def self.build
         instance = new
 

@@ -7,6 +7,14 @@ module RaygunClient
     attribute :client, ClientInfo
     attribute :error, ErrorData
 
+    def ==(other)
+      self.class == other.class &&
+        occurred_time == other.occurred_time &&
+        machine_name == other.machine_name &&
+        client == other.client &&
+        error == other.error
+    end
+
     module Serializer
       def self.json
         JSON
