@@ -6,6 +6,7 @@ module RaygunClient
     attribute :machine_name, String
     attribute :client, ClientInfo
     attribute :error, ErrorData
+    attribute :custom_data, Hash
 
     def ==(other)
       self.class == other.class &&

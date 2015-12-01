@@ -40,6 +40,8 @@ module RaygunClient
 
           details[:error] = error
 
+          details[:user_custom_data] = data.custom_data
+
           raw_data[:details] = details
 
           raw_data

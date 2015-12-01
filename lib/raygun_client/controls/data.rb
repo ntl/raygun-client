@@ -6,6 +6,7 @@ module RaygunClient
 
         data.occurred_time = time
         data.machine_name = machine_name
+        data.custom_data = custom_data
 
         data.client = RaygunClient::Data::ClientInfo.build
 
@@ -22,6 +23,10 @@ module RaygunClient
         'some machine name'
       end
 
+      def self.custom_data
+        { 'someKey' => 'some value' }
+      end
+
       module JSON
         def self.text
           ::JSON.generate(data)
@@ -35,7 +40,8 @@ module RaygunClient
             'details' => {
               'machineName' => Controls::Data.machine_name,
               'client' => Client.data,
-              'error' => Error.data
+              'error' => Error.data,
+              'userCustomData' => { 'someKey' => 'some value' }
             }
           }
         end
