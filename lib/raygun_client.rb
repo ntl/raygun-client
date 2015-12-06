@@ -3,6 +3,7 @@ require 'json'
 require 'serialize'
 require 'connection'
 require 'http/protocol'
+require 'telemetry'
 
 require 'error_data'
 

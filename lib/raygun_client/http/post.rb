@@ -4,10 +4,12 @@ module RaygunClient
       attr_reader :data
 
       dependency :session
+      dependency :telemetry, ::Telemetry
 
       def self.build
         new.tap do |instance|
           Session.configure instance
+          ::Telemetry.configure instance
         end
       end
 
@@ -28,7 +30,31 @@ module RaygunClient
         json_text = Data::Serializer::JSON::Write.(data)
 
         response = session.post json_text
+
+        # telemetry.record :posted, Telemetry::Data.new(data, response)
+        telemetry.record :posted, Telemetry::Data.new(data, response)
+
         response
+      end
+
+      def self.register_telemetry_sink(post)
+        sink = Telemetry.sink
+        post.telemetry.register sink
+        sink
+      end
+
+      module Telemetry
+        class Sink
+          include ::Telemetry::Sink
+
+          record :posted
+        end
+
+        Data = Struct.new :data, :response
+
+        def self.sink
+          Sink.new
+        end
       end
     end
   end
