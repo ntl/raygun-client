@@ -5,11 +5,13 @@ module RaygunClient
 
       dependency :session
       dependency :telemetry, ::Telemetry
+      dependency :logger, ::Telemetry::Logger
 
       def self.build
         new.tap do |instance|
           Session.configure instance
           ::Telemetry.configure instance
+          ::Telemetry::Logger.configure instance
         end
       end
 
@@ -27,12 +29,14 @@ module RaygunClient
       end
 
       def call(data)
+        logger.trace "Posting to Raygun"
         json_text = Data::Serializer::JSON::Write.(data)
 
         response = session.post json_text
 
-        # telemetry.record :posted, Telemetry::Data.new(data, response)
         telemetry.record :posted, Telemetry::Data.new(data, response)
+
+        logger.debug "Posted to Raygun (Status Code: #{response.status_code}, Reason Phrase: #{response.reason_phrase})"
 
         response
       end

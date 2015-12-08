@@ -5,11 +5,19 @@ module RaygunClient
         attr_reader :data
 
         def self.call(data)
-          ::JSON.generate(
+          logger.trace "Serializing Raygun data"
+          logger.data "Raygun data: #{data.inspect}"
+
+          json_text = ::JSON.generate(
             formatted_data(
               raw_data(data)
             )
           )
+
+          logger.trace "Serialized Raygun data"
+          logger.data "Serialized Raygun data: #{json_text}"
+
+          json_text
         end
 
         def self.raw_data(data)
@@ -49,6 +57,10 @@ module RaygunClient
 
         def self.formatted_data(raw_data)
           Casing::Camel.(raw_data)
+        end
+
+        def self.logger
+          @logger ||= Telemetry::Logger.build self
         end
       end
     end
