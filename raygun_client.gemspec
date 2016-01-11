@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'serialize'
   s.add_runtime_dependency 'connection'
   s.add_runtime_dependency 'controls'
-  s.add_runtime_dependency 'http-protocol'
+  s.add_runtime_dependency 'http-commands'
   s.add_runtime_dependency 'telemetry'
 
   s.add_development_dependency 'minitest'

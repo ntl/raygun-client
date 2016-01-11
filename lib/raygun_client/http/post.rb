@@ -3,13 +3,11 @@ module RaygunClient
     class Post
       attr_reader :data
 
-      dependency :session
       dependency :telemetry, ::Telemetry
       dependency :logger, ::Telemetry::Logger
 
       def self.build
         new.tap do |instance|
-          Session.configure instance
           ::Telemetry.configure instance
           ::Telemetry::Logger.configure instance
         end
@@ -32,13 +30,33 @@ module RaygunClient
         logger.trace "Posting to Raygun"
         json_text = Data::Serializer::JSON::Write.(data)
 
-        response = session.post json_text
+        response = post json_text
 
         telemetry.record :posted, Telemetry::Data.new(data, response)
 
         logger.debug "Posted to Raygun (Status Code: #{response.status_code}, Reason Phrase: #{response.reason_phrase})"
 
         response
+      end
+
+      def hostname
+        'api.raygun.io'
+      end
+
+      def path
+        '/entries'
+      end
+
+      def api_key
+        ENV['RAYGUN_API_KEY']
+      end
+
+      def uri
+        URI::HTTPS.build :host => hostname, :path => path
+      end
+
+      def post(request_body)
+        ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key)
       end
 
       def self.register_telemetry_sink(post)
