@@ -1,6 +1,6 @@
 require_relative 'spec_init'
 
-describe "Post Telemetry" do
+context "Post Telemetry" do
   context "Post" do
     data = RaygunClient::Controls::Data.example
     post = RaygunClient::HTTP::Post.build
@@ -9,17 +9,17 @@ describe "Post Telemetry" do
 
     post.(data)
 
-    specify "Records posted telemetry" do
+    test "Records posted telemetry" do
       assert(sink.recorded_posted?)
     end
 
     context "Telemetry data" do
-      specify "Data" do
+      test "Data" do
         assert(sink.recorded_posted? { |record| record.data.data == data })
       end
 
-      specify "Response" do
-        refute(sink.recorded_posted? { |record| record.data.response.nil? })
+      test "Response" do
+        assert(!sink.recorded_posted? { |record| record.data.response.nil? })
       end
     end
   end

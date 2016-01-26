@@ -1,7 +1,7 @@
 require_relative '../spec_init'
 
-describe "Post Error Data to the Raygun API" do
-  specify "Results in HTTP Status of 202 Accepted" do
+context "Post Error Data to the Raygun API" do
+  test "Results in HTTP Status of 202 Accepted" do
     data = RaygunClient::Controls::Data.example
     response = RaygunClient::HTTP::Post.(data)
 

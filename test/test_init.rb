@@ -6,7 +6,7 @@ puts RUBY_DESCRIPTION
 
 require_relative '../init.rb'
 
-require 'runner'
+require 'test_bench'; TestBench.activate
 require 'raygun_client/controls'
 require 'ostruct'
 

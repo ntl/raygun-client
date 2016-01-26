@@ -1,8 +1,8 @@
 require_relative 'spec_init'
 
-describe "Configure a Receiver" do
+context "Configure a Receiver" do
   context "Default attribute name" do
-    specify "The receiver has an instance of the post object" do
+    test "The receiver has an instance of the post object" do
       receiver = OpenStruct.new
 
       RaygunClient::HTTP::Post.configure receiver
@@ -12,7 +12,7 @@ describe "Configure a Receiver" do
   end
 
   context "Specific attribute name" do
-    specify "The receiver has an instance of the post object" do
+    test "The receiver has an instance of the post object" do
       receiver = OpenStruct.new
 
       RaygunClient::HTTP::Post.configure receiver, :other_attr
