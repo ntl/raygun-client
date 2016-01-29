@@ -1,4 +1,4 @@
-require_relative 'spec_init'
+require_relative '../spec_init'
 
 context "Post Telemetry" do
   context "Post" do

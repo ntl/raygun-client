@@ -6,10 +6,14 @@ module RaygunClient
       dependency :telemetry, ::Telemetry
       dependency :logger, ::Telemetry::Logger
 
-      def self.build
+      # TODO Depend on HTTP::Commands::Post when it's configurable
+      dependency :connection, Connection::Client
+
+      def self.build(connection: nil)
         new.tap do |instance|
           ::Telemetry.configure instance
           ::Telemetry::Logger.configure instance
+          Connection::Client.configure instance, host, port, ssl: true
         end
       end
 
@@ -39,8 +43,12 @@ module RaygunClient
         response
       end
 
-      def hostname
+      def self.host
         'api.raygun.io'
+      end
+
+      def self.port
+        443
       end
 
       def path
@@ -52,11 +60,11 @@ module RaygunClient
       end
 
       def uri
-        URI::HTTPS.build :host => hostname, :path => path
+        URI::HTTPS.build :host => self.class.host, :path => path
       end
 
       def post(request_body)
-        ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key)
+        ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key, connection: connection)
       end
 
       def self.register_telemetry_sink(post)
@@ -70,12 +78,57 @@ module RaygunClient
           include ::Telemetry::Sink
 
           record :posted
+
+          module Assertions
+            def posts(&blk)
+              if blk.nil?
+                return posted_records
+              end
+
+              posted_records.select do |record|
+                blk.call(record.data.data, record.data.response)
+              end
+            end
+
+            def posted?(&blk)
+              if blk.nil?
+                return recorded_posted?
+              end
+
+              recorded_posted? do |record|
+                blk.call(record.data.data, record.data.response)
+              end
+            end
+          end
         end
 
         Data = Struct.new :data, :response
 
         def self.sink
           Sink.new
+        end
+      end
+
+      module Substitute
+        def self.build
+          Substitute::Post.build.tap do |substitute|
+            sink = RaygunClient::HTTP::Post.register_telemetry_sink(substitute)
+            substitute.sink = sink
+          end
+        end
+
+        class Post < HTTP::Post
+          attr_accessor :sink
+
+          def self.build
+            new.tap do |instance|
+              ::Telemetry.configure instance
+              ::Telemetry::Logger.configure instance
+
+              # TODO Remove this when Post command becomes configurable
+              Connection::Client.configure instance, host, port, ssl: true
+            end
+          end
         end
       end
     end
