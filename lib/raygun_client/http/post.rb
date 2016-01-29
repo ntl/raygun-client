@@ -5,13 +5,15 @@ module RaygunClient
 
       dependency :telemetry, ::Telemetry
       dependency :logger, ::Telemetry::Logger
+
+      # TODO Depend on HTTP::Commands::Post when it's configurable
       dependency :connection, Connection::Client
 
-      def self.build
+      def self.build(connection: nil)
         new.tap do |instance|
           ::Telemetry.configure instance
           ::Telemetry::Logger.configure instance
-          Connection::Client.configure instance, host, port, reconnect: :when_closed
+          Connection::Client.configure instance, host, port, ssl: true
         end
       end
 
@@ -94,7 +96,7 @@ module RaygunClient
               end
 
               recorded_posted? do |record|
-                blk.call(record.data.message, record.data.stream_name, record.data.expected_version, record.data.reply_stream_name)
+                blk.call(record.data.data, record.data.response)
               end
             end
           end
@@ -109,14 +111,24 @@ module RaygunClient
 
       module Substitute
         def self.build
-          Substitute::Post.build.tap do |substitute_writer|
-            sink = Messaging::Post.register_telemetry_sink(substitute_writer)
-            substitute_writer.sink = sink
+          Substitute::Post.build.tap do |substitute|
+            sink = RaygunClient::HTTP::Post.register_telemetry_sink(substitute)
+            substitute.sink = sink
           end
         end
 
         class Post < HTTP::Post
           attr_accessor :sink
+
+          def self.build
+            new.tap do |instance|
+              ::Telemetry.configure instance
+              ::Telemetry::Logger.configure instance
+
+              # TODO Remove this when Post command becomes configurable
+              Connection::Client.configure instance, host, port, ssl: true
+            end
+          end
         end
       end
     end
