@@ -5,11 +5,13 @@ module RaygunClient
 
       dependency :telemetry, ::Telemetry
       dependency :logger, ::Telemetry::Logger
+      dependency :connection, Connection::Client
 
       def self.build
         new.tap do |instance|
           ::Telemetry.configure instance
           ::Telemetry::Logger.configure instance
+          Connection::Client.configure instance, host, port, reconnect: :when_closed
         end
       end
 
@@ -39,8 +41,12 @@ module RaygunClient
         response
       end
 
-      def hostname
+      def self.host
         'api.raygun.io'
+      end
+
+      def self.port
+        443
       end
 
       def path
@@ -52,11 +58,11 @@ module RaygunClient
       end
 
       def uri
-        URI::HTTPS.build :host => hostname, :path => path
+        URI::HTTPS.build :host => self.class.host, :path => path
       end
 
       def post(request_body)
-        ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key)
+        ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key, connection: connection)
       end
 
       def self.register_telemetry_sink(post)
@@ -70,12 +76,47 @@ module RaygunClient
           include ::Telemetry::Sink
 
           record :posted
+
+          module Assertions
+            def posts(&blk)
+              if blk.nil?
+                return posted_records
+              end
+
+              posted_records.select do |record|
+                blk.call(record.data.data, record.data.response)
+              end
+            end
+
+            def posted?(&blk)
+              if blk.nil?
+                return recorded_posted?
+              end
+
+              recorded_posted? do |record|
+                blk.call(record.data.message, record.data.stream_name, record.data.expected_version, record.data.reply_stream_name)
+              end
+            end
+          end
         end
 
         Data = Struct.new :data, :response
 
         def self.sink
           Sink.new
+        end
+      end
+
+      module Substitute
+        def self.build
+          Substitute::Post.build.tap do |substitute_writer|
+            sink = Messaging::Post.register_telemetry_sink(substitute_writer)
+            substitute_writer.sink = sink
+          end
+        end
+
+        class Post < HTTP::Post
+          attr_accessor :sink
         end
       end
     end
