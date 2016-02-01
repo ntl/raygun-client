@@ -5,6 +5,9 @@ context "Post Substitute and Telemetry" do
     post_data = RaygunClient::Controls::Data.example
     substitute_post = RaygunClient::HTTP::Post::Substitute.build
 
+    substitute_post.http_post.status_code = 'some-status-code'
+    substitute_post.http_post.reason_phrase = 'some-reason-phrase'
+
     sink = substitute_post.sink
 
     post_response = substitute_post.(post_data)
