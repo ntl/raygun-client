@@ -1,7 +1,9 @@
 module RaygunClient
   module Controls
     module Data
-      def self.example
+      def self.example(custom_data=nil)
+        custom_data ||= self.custom_data
+
         data = RaygunClient::Data.build
 
         data.occurred_time = time
