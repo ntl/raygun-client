@@ -18,13 +18,13 @@ context "Post Substitute" do
 
       test "data block argument" do
         assert sink do
-          posted? { |data| data == post_data}
+          posted? { |data| data == post_data }
         end
       end
 
       test "data and response block arguments" do
         assert sink do
-          posted? { |data, response| data == post_data && response == post_response}
+          posted? { |data, response| data == post_data && response.status_code == 'some-status-code' }
         end
       end
     end
@@ -38,13 +38,13 @@ context "Post Substitute" do
 
       test "data block argument" do
         assert sink do
-          sink.posts { |data| data == post_data}.length == 1
+          sink.posts { |data| data == post_data }.length == 1
         end
       end
 
       test "data and response block argument" do
         assert sink do
-          sink.posts { |data, response| data == post_data && response == post_response}.length == 1
+          sink.posts { |data, response| data == post_data && response.status_code == 'some-status-code' }.length == 1
         end
       end
     end
