@@ -68,13 +68,7 @@ module RaygunClient
       end
 
       def post(request_body)
-        logger.fubar "Super type knows about the subtype. Horrible hack until HTTP commands can be dependencies"
-
-        if self.is_a? Substitute::Post
-          Struct.new(:status_code, :reason_phrase).new
-        else
-          ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key, connection: connection)
-        end
+        ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key, connection: connection)
       end
 
       def self.register_telemetry_sink(post)
@@ -138,6 +132,12 @@ module RaygunClient
               logger.todo "Remove this when Post command becomes configurable [Scott, Sun Jan 31 2016]"
               Connection::Client.configure instance, host, port, ssl: true
             end
+          end
+
+          def post(request_body)
+            logger.todo "Remove this when Post command becomes configurable [Scott, Sun Jan 31 2016]"
+
+            Struct.new(:status_code, :reason_phrase).new
           end
         end
       end
