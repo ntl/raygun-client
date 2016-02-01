@@ -134,11 +134,12 @@ module RaygunClient
             end
           end
 
+          Response = Struct.new(:status_code, :reason_phrase)
           def post(request_body)
             logger.todo "Remove this when Post command becomes configurable [Scott, Sun Jan 31 2016]"
 
-            Struct.new(:status_code, :reason_phrase).new.tap do
-              logger.debug "Not sent to Raygun"
+            Response.new('some-status-code', 'some-reason-phrase').tap do
+              logger.warn "Not sent to Raygun"
             end
           end
         end
