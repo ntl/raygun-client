@@ -1,8 +1,9 @@
 module RaygunClient
   module Controls
     module Data
-      def self.example(custom_data=nil)
+      def self.example(custom_data=nil, time: nil)
         custom_data ||= self.custom_data
+        time ||= self.time
 
         data = RaygunClient::Data.build
 
