@@ -9,15 +9,13 @@ module RaygunClient
 
       dependency :telemetry, ::Telemetry
       dependency :logger, ::Telemetry::Logger
-
-      logger.todo "Depend on HTTP::Commands::Post when it's configurable [Scott, Sun Jan 31 2016]"
-      dependency :connection, Connection::Client
+      dependency :http_post, ::HTTP::Commands::Post
 
       def self.build(connection: nil)
         new.tap do |instance|
           ::Telemetry.configure instance
           ::Telemetry::Logger.configure instance
-          Connection::Client.configure instance, host, port, ssl: true
+          ::HTTP::Commands::Post.configure instance, :http_post, connection: connection
         end
       end
 
@@ -68,7 +66,8 @@ module RaygunClient
       end
 
       def post(request_body)
-        ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key, connection: connection)
+        # ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key, connection: connection)
+        http_post.(request_body, uri, 'X-ApiKey' => api_key)
       end
 
       def self.register_telemetry_sink(post)
@@ -128,15 +127,12 @@ module RaygunClient
             new.tap do |instance|
               ::Telemetry.configure instance
               ::Telemetry::Logger.configure instance
-
-              logger.todo "Remove this when Post command becomes configurable [Scott, Sun Jan 31 2016]"
-              Connection::Client.configure instance, host, port, ssl: true
             end
           end
 
           Response = Struct.new(:status_code, :reason_phrase)
           def post(request_body)
-            logger.todo "Remove this when Post command becomes configurable [Scott, Sun Jan 31 2016]"
+            logger.todo "Remove this when Post command has a substitute [Scott, Sun Jan 31 2016]"
 
             Response.new('some-status-code', 'some-reason-phrase').tap do
               logger.warn "Not sent to Raygun"
