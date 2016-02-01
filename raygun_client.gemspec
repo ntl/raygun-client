@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = 'raygun_client'
-  s.version = '0.0.2.7'
+  s.version = '0.0.2.8'
   s.summary = 'Client for the Raygun API using the Obsidian HTTP client'
   s.description = ' '
 
