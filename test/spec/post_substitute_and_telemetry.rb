@@ -1,6 +1,6 @@
-require_relative '../spec_init'
+require_relative './spec_init'
 
-context "Post Substitute" do
+context "Post Substitute and Telemetry" do
   context "Records Posts" do
     post_data = RaygunClient::Controls::Data.example
     substitute_post = RaygunClient::HTTP::Post::Substitute.build
