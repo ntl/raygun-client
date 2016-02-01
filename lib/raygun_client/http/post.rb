@@ -1,12 +1,16 @@
 module RaygunClient
   module HTTP
     class Post
+      def self.logger
+        @logger ||= ::Telemetry::Logger.get self
+      end
+
       attr_reader :data
 
       dependency :telemetry, ::Telemetry
       dependency :logger, ::Telemetry::Logger
 
-      # TODO Depend on HTTP::Commands::Post when it's configurable
+      logger.todo "Depend on HTTP::Commands::Post when it's configurable [Scott, Sun Jan 31 2016]"
       dependency :connection, Connection::Client
 
       def self.build(connection: nil)
@@ -64,7 +68,13 @@ module RaygunClient
       end
 
       def post(request_body)
-        ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key, connection: connection)
+        logger.fubar "Super type knows about the subtype. Horrible hack until HTTP commands can be dependencies"
+
+        if self.is_a? Substitute::Post
+          Struct.new(:status_code, :reason_phrase).new
+        else
+          ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key, connection: connection)
+        end
       end
 
       def self.register_telemetry_sink(post)
@@ -125,7 +135,7 @@ module RaygunClient
               ::Telemetry.configure instance
               ::Telemetry::Logger.configure instance
 
-              # TODO Remove this when Post command becomes configurable
+              logger.todo "Remove this when Post command becomes configurable [Scott, Sun Jan 31 2016]"
               Connection::Client.configure instance, host, port, ssl: true
             end
           end
