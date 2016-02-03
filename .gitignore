@@ -7,5 +7,4 @@ gems
 .DS_store
 *.log
 *scratch.*
-materials
 *.gem
