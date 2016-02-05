@@ -34,9 +34,9 @@ module RaygunClient
 
       def call(data)
         logger.trace "Posting to Raygun"
-        json_text = Data::Serializer::JSON::Write.(data)
+        json_text = Serialize::Write.(data, :json)
 
-        response = post json_text
+        response = post(json_text)
 
         telemetry.record :posted, Telemetry::Data.new(data, response)
 

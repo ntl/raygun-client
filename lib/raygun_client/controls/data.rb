@@ -75,19 +75,19 @@ module RaygunClient
           module StackTrace
             def self.data
               [
-                Lines::First.data,
-                Lines::Second.data,
-                Lines::Third.data
+                Frames::First.data,
+                Frames::Second.data,
+                Frames::Third.data
               ]
             end
 
-            module Lines
+            module Frames
               module First
                 def self.data
                   {
-                    'fileName' => Controls::Error::Backtrace::Lines::First.filename,
-                    'lineNumber' => Controls::Error::Backtrace::Lines::First.line_number,
-                    'methodName' => Controls::Error::Backtrace::Lines::First.method_name
+                    'fileName' => Controls::Error::Backtrace::Frames::First.filename,
+                    'lineNumber' => Controls::Error::Backtrace::Frames::First.line_number,
+                    'methodName' => Controls::Error::Backtrace::Frames::First.method_name
                   }
                 end
               end
@@ -95,9 +95,9 @@ module RaygunClient
               module Second
                 def self.data
                   {
-                    'fileName' => Controls::Error::Backtrace::Lines::Second.filename,
-                    'lineNumber' => Controls::Error::Backtrace::Lines::Second.line_number,
-                    'methodName' => Controls::Error::Backtrace::Lines::Second.method_name
+                    'fileName' => Controls::Error::Backtrace::Frames::Second.filename,
+                    'lineNumber' => Controls::Error::Backtrace::Frames::Second.line_number,
+                    'methodName' => Controls::Error::Backtrace::Frames::Second.method_name
                   }
                 end
               end
@@ -105,9 +105,9 @@ module RaygunClient
               module Third
                 def self.data
                   {
-                    'fileName' => Controls::Error::Backtrace::Lines::Third.filename,
-                    'lineNumber' => Controls::Error::Backtrace::Lines::Third.line_number,
-                    'methodName' => Controls::Error::Backtrace::Lines::Third.method_name
+                    'fileName' => Controls::Error::Backtrace::Frames::Third.filename,
+                    'lineNumber' => Controls::Error::Backtrace::Frames::Third.line_number,
+                    'methodName' => Controls::Error::Backtrace::Frames::Third.method_name
                   }
                 end
               end
