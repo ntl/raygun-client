@@ -66,7 +66,6 @@ module RaygunClient
       end
 
       def post(request_body)
-        # ::HTTP::Commands::Post.(request_body, uri, 'X-ApiKey' => api_key, connection: connection)
         http_post.(request_body, uri, 'X-ApiKey' => api_key)
       end
 
