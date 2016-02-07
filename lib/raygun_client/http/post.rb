@@ -5,6 +5,8 @@ module RaygunClient
         @logger ||= ::Telemetry::Logger.get self
       end
 
+      setting :api_key
+
       attr_reader :data
 
       dependency :telemetry, ::Telemetry
@@ -13,6 +15,8 @@ module RaygunClient
 
       def self.build(connection: nil)
         new.tap do |instance|
+          RaygunClient::Settings.set(instance)
+
           ::Telemetry.configure instance
           ::Telemetry::Logger.configure instance
           ::HTTP::Commands::Post.configure instance, :http_post, connection: connection
@@ -55,10 +59,6 @@ module RaygunClient
 
       def path
         '/entries'
-      end
-
-      def api_key
-        ENV['RAYGUN_API_KEY']
       end
 
       def uri

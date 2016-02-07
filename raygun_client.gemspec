@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = 'raygun_client'
-  s.version = '0.1.0.0'
+  s.version = '0.2.0.0'
   s.summary = 'Client for the Raygun API using the Obsidian HTTP client'
   s.description = ' '
 
@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'controls'
   s.add_runtime_dependency 'http-commands'
   s.add_runtime_dependency 'telemetry'
+  s.add_runtime_dependency 'settings'
 
   s.add_development_dependency 'test_bench'
 end
