@@ -13,7 +13,6 @@ puts RUBY_DESCRIPTION
 
 require_relative '../init.rb'
 
-require 'test_bench'; TestBench.activate
 require 'raygun_client/controls'
 require 'ostruct'
 
