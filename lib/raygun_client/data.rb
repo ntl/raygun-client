@@ -6,6 +6,7 @@ module RaygunClient
     attribute :machine_name, String
     attribute :client, ClientInfo
     attribute :error, ErrorData
+    attribute :tags, Array
     attribute :custom_data, Hash
 
     def ==(other)
@@ -44,7 +45,8 @@ module RaygunClient
 
       details[:error] = error
 
-      details[:user_custom_data] = custom_data
+      details[:tags] = tags unless tags.empty?
+      details[:user_custom_data] = custom_data unless custom_data.empty?
 
       raw_data[:details] = details
 
