@@ -9,6 +9,7 @@ module RaygunClient
 
         data.occurred_time = time
         data.machine_name = machine_name
+        data.tags = self.tags
         data.custom_data = custom_data
 
         data.client = RaygunClient::Data::ClientInfo.build
@@ -24,6 +25,10 @@ module RaygunClient
 
       def self.machine_name
         'some machine name'
+      end
+
+      def self.tags
+        ['some-tag']
       end
 
       def self.custom_data
@@ -44,7 +49,8 @@ module RaygunClient
               'machineName' => Controls::Data.machine_name,
               'client' => Client.data,
               'error' => Error.data,
-              'userCustomData' => { 'someKey' => 'some value' }
+              'tags' => Controls::Data.tags,
+              'userCustomData' => Controls::Data.custom_data
             }
           }
         end
