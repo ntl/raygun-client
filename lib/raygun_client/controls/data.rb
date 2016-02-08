@@ -1,15 +1,16 @@
 module RaygunClient
   module Controls
     module Data
-      def self.example(custom_data=nil, time: nil)
+      def self.example(custom_data=nil, tags=nil, time: nil)
         custom_data ||= self.custom_data
+        tags ||= self.tags
         time ||= self.time
 
         data = RaygunClient::Data.build
 
         data.occurred_time = time
         data.machine_name = machine_name
-        data.tags = self.tags
+        data.tags = tags
         data.custom_data = custom_data
 
         data.client = RaygunClient::Data::ClientInfo.build
