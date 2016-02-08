@@ -44,7 +44,7 @@ module RaygunClient
 
         telemetry.record :posted, Telemetry::Data.new(data, response)
 
-        logger.debug "Posted to Raygun (Status Code: #{response.status_code}, Reason Phrase: #{response.reason_phrase})"
+        logger.info "Posted to Raygun (#{LogText::Posted.(data, response)})"
 
         response
       end
@@ -127,6 +127,14 @@ module RaygunClient
               ::Telemetry.configure instance
               ::Telemetry::Logger.configure instance
             end
+          end
+        end
+      end
+
+      module LogText
+        module Posted
+          def self.call(data, response)
+            "Status Code: #{response.status_code}, Reason Phrase: #{response.reason_phrase}, Error Message: #{data.error.message}, Custom Data: #{data.custom_data || '(none)'})"
           end
         end
       end
