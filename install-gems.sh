@@ -49,7 +49,7 @@ for gem in *.gem; do
   fi
 
   echo $cmd
-  ($cmd)
+  ($cmd) || exit 1
 done
 
 echo '= = ='
