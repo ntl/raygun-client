@@ -24,9 +24,8 @@ module RaygunClient
       end
 
       def self.configure(receiver, attr_name=nil)
-        attr_name ||= :post
+        attr_name ||= :raygun_post
         build.tap do |instance|
-          receiver.raygun_post = instance
           receiver.send "#{attr_name}=", instance
         end
       end

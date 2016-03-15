@@ -7,7 +7,7 @@ context "Configure a Receiver" do
 
       RaygunClient::HTTP::Post.configure receiver
 
-      assert(receiver.post.is_a? RaygunClient::HTTP::Post)
+      assert(receiver.raygun_post.is_a? RaygunClient::HTTP::Post)
     end
   end
 
