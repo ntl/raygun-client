@@ -52,12 +52,12 @@ module RaygunClient
         'api.raygun.io'
       end
 
-      def path
+      def self.path
         '/entries'
       end
 
       def uri
-        URI::HTTPS.build :host => self.class.host, :path => path
+        URI::HTTPS.build :host => self.class.host, :path => self.class.path
       end
 
       def post(request_body)
