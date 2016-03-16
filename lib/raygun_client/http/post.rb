@@ -56,12 +56,12 @@ module RaygunClient
         '/entries'
       end
 
-      def uri
-        URI::HTTPS.build :host => self.class.host, :path => self.class.path
+      def self.uri
+        @uri ||= URI::HTTPS.build :host => host, :path => path
       end
 
       def post(request_body)
-        http_post.(request_body, uri, 'X-ApiKey' => api_key)
+        http_post.(request_body, self.class.uri, 'X-ApiKey' => api_key)
       end
 
       def self.register_telemetry_sink(post)
