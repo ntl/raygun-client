@@ -52,10 +52,6 @@ module RaygunClient
         'api.raygun.io'
       end
 
-      def self.port
-        443
-      end
-
       def path
         '/entries'
       end
