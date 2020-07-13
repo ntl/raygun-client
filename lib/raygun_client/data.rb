@@ -17,23 +17,23 @@ module RaygunClient
         error == other.error
     end
 
-    def to_h
-      raw_data = {}
-
-      raw_data[:occurred_on] = occurred_time
+    def transform_write(data)
+      data[:occurred_on] = data.delete(:occurred_time)
 
       details = {}
+      details[:machine_name] = data.delete(:machine_name)
 
-      details[:machine_name] = machine_name
-
+      client = data.delete(:client)
       details[:client] = client.to_h
 
-      error = {}
-      error[:class_name] = self.error.class_name
-      error[:message] = self.error.message
+      error = data.delete(:error)
+
+      error_data = {}
+      error_data[:class_name] = error.class_name
+      error_data[:message] = error.message
 
       stack_trace = []
-      self.error.backtrace.each do |frame|
+      error.backtrace.each do |frame|
         frame_data = {}
         frame_data[:file_name] = frame.filename
         frame_data[:line_number] = frame.line_number
@@ -41,16 +41,17 @@ module RaygunClient
         stack_trace << frame_data
       end
 
-      error[:stack_trace] = stack_trace
+      error_data[:stack_trace] = stack_trace
 
-      details[:error] = error
+      details[:error] = error_data
 
+      tags = data.delete(:tags)
       details[:tags] = tags unless tags.empty?
+
+      custom_data = data.delete(:custom_data)
       details[:user_custom_data] = custom_data unless custom_data.empty?
 
-      raw_data[:details] = details
-
-      raw_data
+      data[:details] = details
     end
 
     module Transform
@@ -59,7 +60,7 @@ module RaygunClient
       end
 
       def self.raw_data(instance)
-        instance.to_h
+        instance.attributes
       end
 
       module JSON
