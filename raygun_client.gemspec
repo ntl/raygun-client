@@ -15,9 +15,10 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.4'
 
+  s.add_dependency 'evt-configure'
   s.add_dependency 'evt-error_data'
-  s.add_dependency 'evt-telemetry'
   s.add_dependency 'evt-settings'
+  s.add_dependency 'evt-telemetry'
 
   s.add_development_dependency 'test_bench'
 end

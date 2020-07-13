@@ -1,5 +1,7 @@
 require 'json'
+require 'net/http'
 
+require 'configure'
 require 'error_data'
 require 'telemetry'
 require 'settings'

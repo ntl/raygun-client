@@ -1,54 +1,62 @@
-require_relative './automated_init'
+require_relative '../automated_init'
 
 context "Post Substitute and Telemetry" do
   context "Records Posts" do
-    post_data = RaygunClient::Controls::Data.example
-    substitute_post = RaygunClient::HTTP::Post::Substitute.build
+    data = RaygunClient::Controls::Data.example
 
-    substitute_post.http_post.status_code = 'some-status-code'
-    substitute_post.http_post.reason_phrase = 'some-reason-phrase'
+    post = RaygunClient::HTTP::Post.build
 
-    sink = substitute_post.sink
+    sink = RaygunClient::HTTP::Post.register_telemetry_sink(post)
 
-    post_response = substitute_post.(post_data)
+    post_response = post.(data)
 
     context "Records telemetry about the post" do
       test "No block arguments" do
-        assert sink do
-          posted?
-        end
+        posted = sink.posted?
+
+        assert(sink)
       end
 
       test "data block argument" do
-        assert sink do
-          posted? { |data| data == post_data }
-        end
+        posted = sink.posted? { |compare_data| compare_data == data }
+
+        assert(posted)
       end
 
       test "data and response block arguments" do
-        assert sink do
-          posted? { |data, response| data == post_data && response.status_code == 'some-status-code' }
-        end
+        posted = sink.posted? { |compare_data, response|
+          compare_data == data && response.code.to_i == 202
+        }
+
+        assert(posted)
       end
     end
 
     context "Access the data recorded" do
       test "No block arguments" do
-        assert sink do
-          posts.length == 1
-        end
+        posts = sink.posts
+
+        assert(posts.length == 1)
       end
 
       test "data block argument" do
-        assert sink do
-          sink.posts { |data| data == post_data }.length == 1
-        end
+        posts = sink.posts { |compare_data| compare_data == data }
+
+        assert(posts.length == 1)
       end
 
       test "data and response block argument" do
-        assert sink do
-          sink.posts { |data, response| data == post_data && response.status_code == 'some-status-code' }.length == 1
-        end
+        posts = sink.posts { |compare_data, response|
+          compare_data == data && response.code.to_i == 202
+        }
+
+        assert(posts.length == 1)
+      end
+
+      test "no post matches block argument" do
+        posts = sink.posts { false }
+
+        assert(posts.empty?)
       end
     end
   end
