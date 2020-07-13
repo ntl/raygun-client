@@ -1,7 +1,7 @@
 module RaygunClient
   module ClientInfo
     def self.name
-      'Obsidian Raygun Client'
+      'Raygun Client'
     end
 
     def self.version
@@ -9,7 +9,7 @@ module RaygunClient
     end
 
     def self.url
-      'https://github.com/obsidian-btc/raygun-client'
+      'https://github.com/ntl/raygun-client'
     end
   end
 end
