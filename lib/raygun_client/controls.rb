@@ -1,5 +1,3 @@
-require 'controls'
-
 require 'error_data/controls'
 
 require 'raygun_client/controls/error'

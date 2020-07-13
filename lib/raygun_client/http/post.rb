@@ -1,26 +1,21 @@
 module RaygunClient
   module HTTP
     class Post
-      def self.logger
-        @logger ||= ::Telemetry::Logger.get self
-      end
+      include Settings::Setting
+      include Dependency
+      include Log::Dependency
 
       setting :api_key
 
       attr_reader :data
 
       dependency :telemetry, ::Telemetry
-      dependency :logger, ::Telemetry::Logger
-      dependency :http_post, ::HTTP::Commands::Post
 
       def self.build(connection: nil)
-        new.tap do |instance|
-          RaygunClient::Settings.set(instance)
-
-          ::Telemetry.configure instance
-          ::Telemetry::Logger.configure instance
-          ::HTTP::Commands::Post.configure instance, :http_post, connection: connection
-        end
+        instance = new
+        RaygunClient::Settings.set(instance)
+        ::Telemetry.configure(instance)
+        instance
       end
 
       def self.configure(receiver, attr_name=nil)

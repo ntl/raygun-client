@@ -8,12 +8,14 @@ else
 end
 
 ENV['LOGGER'] ||= 'off'
+ENV['LOG_OPTIONAL'] ||= 'on'
 
 puts RUBY_DESCRIPTION
 
 require_relative '../init.rb'
 
+require 'test_bench'; TestBench.activate
+require 'pp'
+
 require 'raygun_client/controls'
 require 'ostruct'
-
-Telemetry::Logger::AdHoc.activate
