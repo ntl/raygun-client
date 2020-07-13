@@ -1,4 +1,4 @@
-require_relative 'bench_init'
+require_relative './automated_init'
 
 context "Data Serialization" do
   test "Converts to JSON text" do
@@ -6,10 +6,7 @@ context "Data Serialization" do
 
     data = RaygunClient::Controls::Data.example
 
-    json_text = Serialize::Write.(data, :json)
-
-    __logger.focus control_json_text
-    __logger.focus json_text
+    json_text = Transform::Write.(data, :json)
 
     assert(json_text == control_json_text)
   end

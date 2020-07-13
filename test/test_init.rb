@@ -19,3 +19,5 @@ require 'pp'
 
 require 'raygun_client/controls'
 require 'ostruct'
+
+Controls = RaygunClient::Controls

@@ -1,4 +1,4 @@
-require_relative './bench_init'
+require_relative './automated_init'
 
 context "Post Substitute and Telemetry" do
   context "Records Posts" do

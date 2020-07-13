@@ -113,10 +113,9 @@ module RaygunClient
           attr_accessor :sink
 
           def self.build
-            new.tap do |instance|
-              ::Telemetry.configure instance
-              ::Telemetry::Logger.configure instance
-            end
+            instance = new
+            ::Telemetry.configure(instance)
+            instance
           end
         end
       end

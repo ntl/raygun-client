@@ -1,4 +1,4 @@
-require_relative 'bench_init'
+require_relative './automated_init'
 
 context "Data Equality" do
   test "Data object equality can be tested" do

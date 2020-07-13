@@ -53,7 +53,7 @@ module RaygunClient
       raw_data
     end
 
-    module Serializer
+    module Transform
       def self.json
         JSON
       end
@@ -63,7 +63,7 @@ module RaygunClient
       end
 
       module JSON
-        def self.serialize(raw_data)
+        def self.write(raw_data)
           formatted_data = Casing::Camel.(raw_data)
           ::JSON.generate(formatted_data)
         end
