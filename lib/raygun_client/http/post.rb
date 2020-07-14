@@ -29,7 +29,7 @@ module RaygunClient
         logger.trace { "Posting to Raygun" }
         json_text = Transform::Write.(data, :json)
 
-        response = post(json_text)
+        response = http_post(json_text)
 
         telemetry.record(:posted, Telemetry::Data.new(data, response))
 
@@ -50,7 +50,7 @@ module RaygunClient
         @uri ||= URI::HTTPS.build(:host => host, :path => path)
       end
 
-      def post(request_body)
+      def http_post(request_body)
         uri = self.class.uri
 
         response = Net::HTTP.post(uri, request_body, { 'X-ApiKey' => api_key })
@@ -111,7 +111,7 @@ module RaygunClient
         class Post < HTTP::Post
           attr_accessor :sink
 
-          def post(_)
+          def http_post(_)
           end
 
           def posted?(data=nil, &block)
