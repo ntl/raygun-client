@@ -110,13 +110,26 @@ module RaygunClient
 
         class Post < HTTP::Post
           attr_accessor :sink
+
+          def post(_)
+          end
+
+          def posted?(data=nil, &block)
+            unless data.nil?
+              block ||= proc { |posted_data|
+                data == posted_data
+              }
+            end
+
+            sink.posted?(&block)
+          end
         end
       end
 
       module LogText
         module Posted
           def self.call(data, response)
-            "Status Code: #{response.code}, Reason Phrase: #{response.message}, Error Message: #{data.error.message}, Custom Data: #{data.custom_data || '(none)'})"
+            "Status Code: #{response&.code || '(none)'}, Reason Phrase: #{response&.message || '(none)'}, Error Message: #{data.error.message}, Custom Data: #{data.custom_data || '(none)'})"
           end
         end
       end
